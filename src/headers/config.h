@@ -6,10 +6,11 @@
 #define WIFI_TIMEOUT  10000
 
 // Časovania semafora
-#define TIME_RED    5000
-#define TIME_GREEN  4000
-#define TIME_ORANGE 2000
-#define TIME_NIGHT_BLINK 800
+#define TIME_RED         5000
+#define TIME_GREEN       4000
+#define TIME_GREEN_MIN   2000  // Minimálna zelená — skôr chodec nemôže skrátiť
+#define TIME_ORANGE      2000
+#define TIME_NIGHT_BLINK  800
 
 // Piny semafor
 #define PIN_RED    25

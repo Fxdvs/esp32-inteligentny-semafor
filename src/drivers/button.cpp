@@ -2,9 +2,10 @@
 #include "../headers/config.h"
 #include <Arduino.h>                              
 
-namespace Button                   
+namespace Button
 {
-  bool pressed = false;                           // Stav tlacitka
+  bool pressed = false;                           // Stav tlacitka (true = práve stlačené v tejto iterácii)
+  bool lastPinState = HIGH;                       // Predchádzajúci stav pinu (INPUT_PULLUP = HIGH v kľude)
   unsigned long lastDebounce = 0;                 // Posledný debouncing
 
   void init()                                     // Inicializácia
@@ -14,15 +15,20 @@ namespace Button
   }
   void update()                                   // Update
   {
-    // Debounce — ignoruj rýchle zmeny pod 200ms
-    if (millis() - lastDebounce < 200) return;
-    if (digitalRead(PIN_BUTTON) == LOW) {
-      pressed = true;
-      lastDebounce = millis();
-      Serial.println("Tlacidlo: stlacene");
-    } else {
-      pressed = false;
+    pressed = false;                              // Vynuluj každý cyklus — true len pri hrane
+
+    bool currentPin = digitalRead(PIN_BUTTON);
+
+    // Detekcia zostupnej hrany (HIGH -> LOW = stlačenie)
+    if (lastPinState == HIGH && currentPin == LOW) {
+      if (millis() - lastDebounce >= 200) {
+        pressed = true;
+        lastDebounce = millis();
+        Serial.println("Tlacidlo: stlacene");
+      }
     }
+
+    lastPinState = currentPin;
   }
   bool isPressed()                                // Stav stlacenia
   {

@@ -79,11 +79,12 @@ namespace Semafor
       case GREEN:
         setLED(false, false, true);
         {
-          bool carPresent = (Sensor::getDistance() < 40.0);
-          bool maxExpired = (elapsed >= TIME_GREEN * 2);
+          bool carPresent  = (Sensor::getDistance() < 40.0);
+          bool maxExpired  = (elapsed >= TIME_GREEN * 2);
           bool timeExpired = (elapsed >= TIME_GREEN);
+          bool chodecSkrat = (chodecRequested && elapsed >= TIME_GREEN_MIN);
 
-          if (maxExpired || (timeExpired && !carPresent)) {
+          if (maxExpired || (timeExpired && !carPresent) || chodecSkrat) {
             changeState(ORANGE);
           }
         }
