@@ -1,6 +1,7 @@
 #include "../headers/web.h"
 #include "../headers/wifi.h"
 #include "../headers/time.h"
+#include "../headers/sensor.h"
 #include <Arduino.h>
 #include <ESPAsyncWebServer.h>
 
@@ -119,6 +120,11 @@ namespace Web {
   </div>
 
   <div class='card'>
+    <div class='label'>Vzdialenost vozidla</div>
+    <div class='value' id='dist'>-- cm</div>
+  </div>
+
+  <div class='card'>
     <div class='label'>Nocny rezim</div>
     <div class='value small' id='noc-val'>--</div>
     <div style='margin-top:8px'>
@@ -139,6 +145,7 @@ namespace Web {
 
     function updateUI(data) {
       document.getElementById('cas').textContent = data.cas;
+      document.getElementById('dist').textContent = data.vzdialenost >= 999 ? '-- cm' : data.vzdialenost.toFixed(1) + ' cm';
       var nocEl = document.getElementById('noc-val');
       var srcEl = document.getElementById('noc-source');
       nocEl.textContent = data.noc ? 'Zapnuty' : 'Vypnuty';
@@ -191,7 +198,8 @@ namespace Web {
       String json = "{";
       json += "\"cas\":\"" + Time::getFormattedTime() + "\",";
       json += "\"noc\":"    + String(Time::isNightMode() ? "true" : "false") + ",";
-      json += "\"manual\":" + String(Time::isNightModeManualActive() ? "true" : "false");
+      json += "\"manual\":" + String(Time::isNightModeManualActive() ? "true" : "false") + ",";
+      json += "\"vzdialenost\":" + String(Sensor::getDistance(), 1);
       json += "}";
       request->send(200, "application/json", json);
     });
