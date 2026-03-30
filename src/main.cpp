@@ -23,6 +23,9 @@ void setup() {                                  // Inicializácia
 }
 
 void loop() {                                   // Loop
+  // WiFi — reconnect ak vypadlo
+  Wifi::update();
+
   // Aktualizácia času
   Time::update();
 

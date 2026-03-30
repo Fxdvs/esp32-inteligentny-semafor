@@ -12,6 +12,7 @@ namespace Time {
 
   bool _manualOverrideActive = false;
   bool _manualOverrideValue  = false;
+  bool _synced = false;                           // true ak NTP aspoň raz úspešne syncoval
 
   void init()                                     // Inicializácia
   {
@@ -21,15 +22,16 @@ namespace Time {
     }
 
     timeClient.begin();
-    timeClient.update();
-
-    Serial.print("Cas synchronizovany: ");
-    Serial.println(timeClient.getFormattedTime());
+    if (timeClient.update()) {
+      _synced = true;
+      Serial.print("Cas synchronizovany: ");
+      Serial.println(timeClient.getFormattedTime());
+    }
   }
   void update()                                   // Update
   {
     if (Wifi::isConnected()) {
-      timeClient.update();
+      if (timeClient.update()) _synced = true;
     }
   }
   int getHour()                                   // Zistenie hodiny
@@ -43,6 +45,7 @@ namespace Time {
   bool isNightMode()                              // Zistenie nočných režimov
   {
     if (_manualOverrideActive) return _manualOverrideValue;
+    if (!_synced) return false;                   // Bez NTP sync — normálny cyklus
     int hour = getHour();
     return (hour >= NIGHT_HOUR_FROM || hour < NIGHT_HOUR_TO);
   }
