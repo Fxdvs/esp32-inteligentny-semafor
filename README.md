@@ -30,13 +30,13 @@ src/
 │   ├── config.h          # Konfigurácia pinov, WiFi, časovania
 │   ├── semafor.h
 │   ├── sensor.h
-│   ├── time_manager.h
-│   ├── web_server.h
-│   └── wifi_manager.h
+│   ├── time.h
+│   ├── web.h
+│   └── wifi.h
 ├── services/
-│   ├── time_manager.cpp  # NTP čas, nočný režim
-│   ├── web_server.cpp    # HTTP server, webové rozhranie
-│   └── wifi_manager.cpp  # Pripojenie na WiFi
+│   ├── time.cpp          # NTP čas, nočný režim
+│   ├── web.cpp           # HTTP server, webové rozhranie
+│   └── wifi.cpp          # Pripojenie na WiFi
 └── main.cpp
 ```
 
