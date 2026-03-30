@@ -10,6 +10,9 @@ namespace Time {
   WiFiUDP ntpUDP;
   NTPClient timeClient(ntpUDP, "pool.ntp.org", UTC_OFFSET, UPDATE_INTERVAL);
 
+  bool _manualOverrideActive = false;
+  bool _manualOverrideValue  = false;
+
   void init()                                     // Inicializácia
   {
     if (!Wifi::isConnected()) {
@@ -39,8 +42,25 @@ namespace Time {
   }
   bool isNightMode()                              // Zistenie nočných režimov
   {
+    if (_manualOverrideActive) return _manualOverrideValue;
     int hour = getHour();
     return (hour >= NIGHT_HOUR_FROM || hour < NIGHT_HOUR_TO);
+  }
+
+  void setNightModeManual(bool value)
+  {
+    _manualOverrideActive = true;
+    _manualOverrideValue  = value;
+  }
+
+  void clearNightModeManual()
+  {
+    _manualOverrideActive = false;
+  }
+
+  bool isNightModeManualActive()
+  {
+    return _manualOverrideActive;
   }
 
   String getFormattedTime()

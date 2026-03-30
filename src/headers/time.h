@@ -8,4 +8,7 @@ namespace Time {
   int getMinute();
   bool isNightMode();
   String getFormattedTime();
+  void setNightModeManual(bool value);
+  void clearNightModeManual();
+  bool isNightModeManualActive();
 }
