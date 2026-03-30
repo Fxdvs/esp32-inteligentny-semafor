@@ -9,7 +9,6 @@ namespace Semafor
   State currentState = RED;                       // Aktualny stav
   unsigned long stateStartTime = 0;               // Zaciatok stavu
   bool chodecRequested = false;                   // Check na požadavku od chodcu
-  bool manualNightMode = false;                   // Manualny nočný režim
 
   void init()                                     // Inicializácia
   {
@@ -61,8 +60,8 @@ namespace Semafor
   {
     unsigned long elapsed = millis() - stateStartTime;
 
-    // Nočný režim — automatický podľa času alebo manuálny
-    if (Time::isNightMode() || manualNightMode) {
+    // Nočný režim — automatický podľa času alebo manuálny override z webu
+    if (Time::isNightMode()) {
       if (currentState != NIGHT) {
         changeState(NIGHT);
       }
@@ -99,7 +98,7 @@ namespace Semafor
 
       case NIGHT:
         // Blikajúca oranžová
-        if (!Time::isNightMode() && !manualNightMode) {
+        if (!Time::isNightMode()) {
           changeState(RED);
           break;
         }
@@ -132,10 +131,6 @@ namespace Semafor
 
     if (elapsed >= total) return 0;
     return (total - elapsed) / 1000;
-  }
-  void setNightMode(bool enabled)                 // Nastavenie nočného režimu
-  {
-    manualNightMode = enabled;
   }
   void requestChodec()                            // Požiadavka od chodcu
   {

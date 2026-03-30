@@ -12,6 +12,5 @@ namespace Semafor {
   void update();
   State getState();
   unsigned long getTimeRemaining();
-  void setNightMode(bool enabled);
   void requestChodec();
 }
