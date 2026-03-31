@@ -4,10 +4,12 @@
 #include "../headers/sensor.h"
 #include <Arduino.h>
 #include <ESPAsyncWebServer.h>
+#include <WiFi.h>
 
 namespace Web {
 
   AsyncWebServer server(80);
+  static String bootTime = "";
 
   void init()
   {
@@ -16,8 +18,12 @@ namespace Web {
       return;
     }
 
+    bootTime = Time::getFormattedTime();
+
     // Hlavná stránka
     server.on("/", HTTP_GET, [](AsyncWebServerRequest* request) {
+      String espModel = String(ESP.getChipModel());
+      String espIP    = WiFi.localIP().toString();
       String html = R"(<!DOCTYPE html>
 <html lang='sk'>
 <head>
@@ -113,6 +119,15 @@ namespace Web {
 </head>
 <body>
   <h1>Inteligentny semafor</h1>
+
+  <div class='card'>
+    <div class='label'>Model</div>
+    <div class='value small'>)" + espModel + R"(</div>
+    <div class='label' style='margin-top:12px'>IP adresa</div>
+    <div class='value small'>)" + espIP + R"(</div>
+    <div class='label' style='margin-top:12px'>Cas zapnutia</div>
+    <div class='value small'>)" + bootTime + R"(</div>
+  </div>
 
   <div class='card'>
     <div class='label'>Aktualny cas</div>
