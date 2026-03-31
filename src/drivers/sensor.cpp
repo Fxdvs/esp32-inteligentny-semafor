@@ -2,9 +2,6 @@
 #include "../headers/config.h"
 #include <Arduino.h>                              
 
-#define SENSOR_TRIG 5
-#define SENSOR_ECHO 18                            // Nastavenie pinov
-
 namespace Sensor                
 {
   float lastDistance = 999.0;                     // Posledná vzdialenost
@@ -42,7 +39,7 @@ namespace Sensor
     lastMeasure  = millis();
     lastDistance = measure();
 
-    if (lastDistance < 40.0) {
+    if (lastDistance < SENSOR_MAX_DISTANCE_CM) {
       Serial.print("Vozidlo: ");
       Serial.print(lastDistance);
       Serial.println(" cm");

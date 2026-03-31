@@ -30,6 +30,7 @@
 
 // Senzor — prah detekcie auta
 #define SENSOR_CAR_THRESHOLD_CM 15.0
+#define SENSOR_MAX_DISTANCE_CM 20.0
 
 // Nočný režim
 #define NIGHT_HOUR_FROM 22
