@@ -42,6 +42,12 @@ src/
 
 ---
 
+## Schéma zapojenia
+
+![Schéma zapojenia](assets/diagram.png)
+
+---
+
 ## Potrebné komponenty
 
 | Komponent | Množstvo | Účel |
